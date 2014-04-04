@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.bukkit</groupId>
-  <artifactId>craftbukkit</artifactId>
+  <groupId>fr.ribesg.nukkit</groupId>
+  <artifactId>nukkit</artifactId>
   <packaging>jar</packaging>
   <version>1.7.9-R0.2</version>
-  <name>CraftBukkit</name>
-  <url>http://www.bukkit.org</url>
+  <name>Nukkit</name>
+  <url>http://www.ribesg.fr</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -14,28 +14,15 @@
     <junit.version>4.11</junit.version>
     <minecraft.version>1.7.9</minecraft.version>
     <minecraft_version>1_7_R3</minecraft_version>
-    <buildtag.prefix>git-Bukkit-</buildtag.prefix>
+    <buildtag.prefix>git-Nukkit-</buildtag.prefix>
     <buildtag.suffix></buildtag.suffix>
   </properties>
 
   <scm>
-    <connection>scm:git:git://github.com/Bukkit/CraftBukkit.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/Bukkit/CraftBukkit.git</developerConnection>
-    <url>https://github.com/Bukkit/CraftBukkit</url>
+    <connection>scm:git:git://github.com/Nukkit/Nukkit.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/Nukkit/Nukkit.git</developerConnection>
+    <url>https://github.com/Nukkit/Nukkit</url>
   </scm>
-
-  <distributionManagement>
-    <repository>
-      <id>repobo-rel</id>
-      <name>repo.bukkit.org Releases</name>
-      <url>http://repo.bukkit.org/content/repositories/releases/</url>
-    </repository>
-    <snapshotRepository>
-      <id>repobo-snap</id>
-      <name>repo.bukkit.org Snapshots</name>
-      <url>http://repo.bukkit.org/content/repositories/snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
 
   <repositories>
     <repository>
@@ -178,9 +165,9 @@
           <archive>
             <manifestEntries>
               <Main-Class>org.bukkit.craftbukkit.Main</Main-Class>
-              <Implementation-Title>CraftBukkit</Implementation-Title>
+              <Implementation-Title>Nukkit</Implementation-Title>
               <Implementation-Version>${describe}</Implementation-Version>
-              <Implementation-Vendor>Bukkit Team</Implementation-Vendor>
+              <Implementation-Vendor>Nukkit Team</Implementation-Vendor>
               <Specification-Title>Bukkit</Specification-Title>
               <Specification-Version>${api.version}</Specification-Version>
               <Specification-Vendor>Bukkit Team</Specification-Vendor>

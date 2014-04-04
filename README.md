@@ -1,18 +1,18 @@
-CraftBukkit
+![Nukkit](http://www.ribesg.fr/images/nukkit.png)
+
+Nukkit
 ===========
 
-A Bukkit (Minecraft Server API) implementation
+* Basically CraftBukkit with stuff
+* Will only be updated to CraftBukkit Beta and Recommended Builds
 
-Website: [http://bukkit.org](http://bukkit.org)  
-Bugs/Suggestions: [http://leaky.bukkit.org](http://leaky.bukkit.org)  
-Contributing Guidelines: [CONTRIBUTING.md](https://github.com/Bukkit/CraftBukkit/blob/master/CONTRIBUTING.md)
+Yet Another Fork of CraftBukkit
+-------------------------------
+I'm doing this mainly for me. I like Spigot but **IN MY OPINION**:
 
-Compilation
------------
+* it's a bit unstable, it doesn't crash often, but it still crashed at least once in 2 months
+* it has too many things/features in it that I don't need
+* the only real advantage it has over CraftBukkit is the integrated Orebfuscator
 
-We use maven to handle our dependencies.
-
-* Install [Maven 3](http://maven.apache.org/download.html)
-* Check out and install [Bukkit](http://github.com/Bukkit/Bukkit)
-    * *Note*: this is not needed as the repository we use has Bukkit too, but you might have a newer one (with your own changes :D)
-* Check out this repo and: `mvn clean package`
+I decided to just make my own simple fork. I don't know what I will add to it.
+There's no plan, and there's no support. Nukkit is under GPLv3.
