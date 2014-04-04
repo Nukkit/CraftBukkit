@@ -259,6 +259,8 @@ public final class CraftServer implements Server {
             getLogger().info("Console input is disabled due to --noconsole command argument");
         }
 
+        fr.ribesg.nukkit.Nukkit.init(this); // Nukkit
+
         configuration = YamlConfiguration.loadConfiguration(getConfigFile());
         configuration.options().copyDefaults(true);
         configuration.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("configurations/bukkit.yml"), Charsets.UTF_8)));
@@ -322,7 +324,7 @@ public final class CraftServer implements Server {
         return overrideAllCommandBlockCommands || commandsConfiguration.getStringList("command-block-overrides").contains(command);
     }
 
-    private File getConfigFile() {
+    public File getConfigFile() { // Nukkit: private -> public
         return (File) console.options.valueOf("bukkit-settings");
     }
 
