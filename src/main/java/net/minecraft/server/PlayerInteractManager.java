@@ -173,6 +173,7 @@ public class PlayerInteractManager {
                     this.o = i1;
                 }
             }
+            fr.ribesg.nukkit.Orebfuscator.instance.updateNearbyBlocks(world, i, j, k); // Nukkit
         }
     }
 

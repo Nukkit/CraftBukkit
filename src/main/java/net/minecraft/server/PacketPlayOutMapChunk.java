@@ -28,6 +28,7 @@ public class PacketPlayOutMapChunk extends Packet {
 
         this.d = chunkmap.c;
         this.c = chunkmap.b;
+        fr.ribesg.nukkit.Orebfuscator.instance.obfuscate(chunk.locX, chunk.locZ, i, chunkmap.a, chunk.world); // Nukkit
 
         try {
             this.buffer = chunkmap.a;

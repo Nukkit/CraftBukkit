@@ -26,6 +26,7 @@ public class PacketPlayOutMapChunkBulk extends Packet {
         }
     };
     // CraftBukkit end
+    private World world; // Nukkit
 
     public PacketPlayOutMapChunkBulk() {}
 
@@ -44,6 +45,7 @@ public class PacketPlayOutMapChunkBulk extends Packet {
             Chunk chunk = (Chunk) list.get(k);
             ChunkMap chunkmap = PacketPlayOutMapChunk.a(chunk, true, '\uffff');
 
+            this.world = chunk.world; /* // Nukkit
             if (buildBuffer.length < j + chunkmap.a.length) {
                 byte[] abyte = new byte[j + chunkmap.a.length];
 
@@ -52,6 +54,7 @@ public class PacketPlayOutMapChunkBulk extends Packet {
             }
 
             System.arraycopy(chunkmap.a, 0, buildBuffer, j, chunkmap.a.length);
+            */ // Nukkit
             j += chunkmap.a.length;
             this.a[k] = chunk.locX;
             this.b[k] = chunk.locZ;
@@ -79,6 +82,20 @@ public class PacketPlayOutMapChunkBulk extends Packet {
         if (this.buffer != null) {
             return;
         }
+
+        // Nukkit start
+        int finalBufferSize = 0;
+        for (int i = 0; i < a.length; i++) {
+            fr.ribesg.nukkit.Orebfuscator.instance.obfuscate(a[i], b[i], c[i], inflatedBuffers[i], world);
+            finalBufferSize += inflatedBuffers[i].length;
+        }
+        buildBuffer = new byte[finalBufferSize];
+        int bufferLocation = 0;
+        for (int i = 0; i < a.length; i++) {
+            System.arraycopy(inflatedBuffers[i], 0, buildBuffer, bufferLocation, inflatedBuffers[i].length);
+            bufferLocation += inflatedBuffers[i].length;
+        }
+        // Nukkit end
 
         Deflater deflater = localDeflater.get();
         deflater.reset();

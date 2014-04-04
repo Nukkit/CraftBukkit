@@ -239,6 +239,7 @@ public class Explosion {
                 j = chunkposition.y;
                 k = chunkposition.z;
                 block = this.world.getType(i, j, k);
+                fr.ribesg.nukkit.Orebfuscator.instance.updateNearbyBlocks(this.world, i, j, k); // Nukkit
                 if (flag) {
                     double d0 = (double) ((float) i + this.world.random.nextFloat());
                     double d1 = (double) ((float) j + this.world.random.nextFloat());

@@ -1,10 +1,14 @@
 package fr.ribesg.nukkit;
 
+import net.minecraft.server.Block;
+import net.minecraft.util.gnu.trove.set.TByteSet;
+import net.minecraft.util.gnu.trove.set.hash.TByteHashSet;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.CraftServer;
 
 import java.io.*;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -19,6 +23,16 @@ public class Nukkit {
      * Configuration values  *
      * * * * * * * * * * * * */
 
+    /**
+     * Orebfuscator - blocks hidden
+     */
+    private final boolean[] replacedBlocks = new boolean[Short.MAX_VALUE];
+
+    /**
+     * Orebfuscator - blocks that will replace hidden blocks
+     */
+    private byte[] replacedWith;
+
     /* * * * * * * * * *
      * Static methods  *
      * * * * * * * * * */
@@ -30,6 +44,8 @@ public class Nukkit {
      */
     public static void init(final CraftServer server) {
         instance = new Nukkit(server);
+
+        Orebfuscator.init(instance.replacedBlocks, instance.replacedWith);
     }
 
     /* * * * * * * *
@@ -67,6 +83,11 @@ public class Nukkit {
      */
     private void createConfig(final File nukkitConfigFile) {
         // Set default values
+        for (int i : new int[]{1, 13, 14, 15, 21, 56, 73, 129}) {
+            this.replacedBlocks[i] = true;
+        }
+
+        this.replacedWith = new byte[]{56};
 
         // Write file
         try {
@@ -95,6 +116,24 @@ public class Nukkit {
         // Header
         builder.append("# Nukkit configuration file\n\n");
 
+        // Orebfuscator - Hidden blocks
+        builder.append("# List of block ids hidden/replaced:\n");
+        builder.append("replacedBlocks:\n");
+        for (int i = 0; i < this.replacedBlocks.length; i++) {
+            if (this.replacedBlocks[i]) {
+                builder.append("- ").append(i).append('\n');
+            }
+        }
+        builder.append("\n");
+
+        // Orebfuscator - Replacing blocks
+        builder.append("# List of block ids which will replace hidden ones:\n");
+        builder.append("replacedWith:\n");
+        for (byte id : this.replacedWith) {
+            builder.append("- ").append(0xFF & id).append('\n');
+        }
+        builder.append("\n");
+
         return builder.toString();
     }
 
@@ -121,6 +160,30 @@ public class Nukkit {
         }
 
         // Set config values
+
+        // Orebfuscator - Hidden blocks
+        if (config.isList("replacedBlocks")) {
+            for (int i = 0; i < this.replacedBlocks.length; i++) {
+                this.replacedBlocks[i] = false;
+            }
+            final List<Integer> replacedBlocksList = config.getIntegerList("replacedBlocks");
+            for (final Integer i : replacedBlocksList) {
+                this.replacedBlocks[i] = true;
+            }
+        }
+
+        // Orebfuscator - Replacing blocks
+        if (config.isList("replacedWith")) {
+            final List<Integer> replacedWithList = config.getIntegerList("replacedWith");
+            final TByteSet bytes = new TByteHashSet(replacedWithList.size());
+            for (final Integer i : replacedWithList) {
+                final Block b = Block.e(i);
+                if (b != null && !b.isTileEntity()) {
+                    bytes.add((byte)(int)i);
+                }
+            }
+            this.replacedWith = bytes.toArray();
+        }
     }
 
 }

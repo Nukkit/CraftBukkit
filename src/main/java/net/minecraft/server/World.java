@@ -480,6 +480,7 @@ public abstract class World implements IBlockAccess {
         }
         // CraftBukkit end
         this.applyPhysics(i, j, k, block);
+        fr.ribesg.nukkit.Orebfuscator.instance.updateNearbyBlocks(this, i, j, k); // Nukkit
     }
 
     public void b(int i, int j, int k, int l) {
