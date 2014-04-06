@@ -195,6 +195,8 @@ public class TileEntityHopper extends TileEntity implements IHopper {
                 }
             }
 
+            if (!this.j()) this.c(8); // Nukkit
+
             return false;
         } else {
             return false;
