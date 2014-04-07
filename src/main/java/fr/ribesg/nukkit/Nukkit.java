@@ -1,5 +1,6 @@
 package fr.ribesg.nukkit;
 
+import fr.ribesg.nukkit.command.TicksPerSecondCommand;
 import net.minecraft.server.Block;
 import net.minecraft.util.gnu.trove.set.TByteSet;
 import net.minecraft.util.gnu.trove.set.hash.TByteHashSet;
@@ -54,6 +55,8 @@ public class Nukkit {
      */
     public static void init(final CraftServer server) {
         instance = new Nukkit(server);
+
+        server.getCommandMap().register("tps", "Nukkit", new TicksPerSecondCommand());
 
         Orebfuscator.init(instance.replacedBlocks, instance.replacedWith);
     }

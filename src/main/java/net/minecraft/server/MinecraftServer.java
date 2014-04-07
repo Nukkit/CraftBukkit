@@ -107,6 +107,16 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IMo
     public int autosavePeriod;
     // CraftBukkit end
 
+    // Nukkit start
+    private static final int TPS = 20;
+    private static final int TICK_TIME = 1000000000 / TPS;
+    private static final int SAMPLE_INTERVAL = 100;
+    public final double[] recentTps = new double[]{20, 20, 20};
+
+    private static double calcTps(final double avg, final double exp, final double tps) {
+        return avg * exp + tps * (1 - exp);
+    } // Nukkit end
+
     public MinecraftServer(OptionSet options, Proxy proxy) { // CraftBukkit - signature file -> OptionSet
         this.X = new UserCache(this, a);
         j = this;
@@ -441,36 +451,30 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IMo
                 this.q.setServerInfo(new ServerPingServerData("1.7.9", 5));
                 this.a(this.q);
 
+                // Nukkit start
+                long lastTick = System.nanoTime(), catchupTime = 0, curTime, wait, tickSection = lastTick;
                 while (this.isRunning) {
-                    long k = ar();
-                    long l = k - i;
-
-                    if (l > 2000L && i - this.P >= 15000L) {
-                        if (this.server.getWarnOnOverload()) // CraftBukkit - Added option to suppress warning messages
-                        MinecraftServer.i.warn("Can\'t keep up! Did the system time change, or is the server overloaded? Running {}ms behind, skipping {} tick(s)", new Object[] { Long.valueOf(l), Long.valueOf(l / 50L)});
-                        l = 2000L;
-                        this.P = i;
-                    }
-
-                    if (l < 0L) {
-                        MinecraftServer.i.warn("Time ran backwards! Did the system time change?");
-                        l = 0L;
-                    }
-
-                    j += l;
-                    i = k;
-                    if (this.worlds.get(0).everyoneDeeplySleeping()) { // CraftBukkit
-                        this.u();
-                        j = 0L;
+                    curTime = System.nanoTime();
+                    wait = TICK_TIME - (curTime - lastTick) - catchupTime;
+                    if (wait > 0) {
+                        Thread.sleep(wait / 1000000);
+                        catchupTime = 0;
+                        continue;
                     } else {
-                        while (j > 50L) {
-                            MinecraftServer.currentTick = (int) (System.currentTimeMillis() / 50); // CraftBukkit
-                            j -= 50L;
-                            this.u();
-                        }
+                        catchupTime = Math.min(1000000000, Math.abs(wait));
                     }
 
-                    Thread.sleep(Math.max(1L,  50L - j));
+                    if (MinecraftServer.currentTick++ % SAMPLE_INTERVAL == 0) {
+                        double currentTps = 1E9 / (curTime - tickSection) * SAMPLE_INTERVAL;
+                        recentTps[0] = calcTps(recentTps[0], 0.9200, currentTps); // 1/exp(5s/1m)
+                        recentTps[1] = calcTps(recentTps[1], 0.9835, currentTps); // 1/exp(5s/5m)
+                        recentTps[2] = calcTps(recentTps[2], 0.9945, currentTps); // 1/exp(5s/15m)
+                        tickSection = curTime;
+                    }
+                    lastTick = curTime;
+
+                    this.u();
+                    // Nukkit end
                     this.O = true;
                 }
             } else {
