@@ -33,6 +33,16 @@ public class Nukkit {
      */
     private byte[] replacedWith;
 
+    /**
+     * ChunkTick - chunks to grow per tick
+     */
+    public int chunksPerTick;
+
+    /**
+     * ChunkTick - clear tick list
+     */
+    public boolean clearTickList;
+
     /* * * * * * * * * *
      * Static methods  *
      * * * * * * * * * */
@@ -89,6 +99,10 @@ public class Nukkit {
 
         this.replacedWith = new byte[]{56};
 
+        this.chunksPerTick = 650;
+
+        this.clearTickList = false;
+
         // Write file
         try {
             if (!nukkitConfigFile.createNewFile()) {
@@ -133,6 +147,14 @@ public class Nukkit {
             builder.append("- ").append(0xFF & id).append('\n');
         }
         builder.append("\n");
+
+        // ChunkTick - Chunks to grow per tick
+        builder.append("# Number of chunks to grow per tick:\n");
+        builder.append("chunksPerTick: ").append(this.chunksPerTick).append("\n\n");
+
+        // ChunkTick - clear tick list
+        builder.append("# Clear tick list ?:\n");
+        builder.append("clearTickList: ").append(this.clearTickList).append("\n\n");
 
         return builder.toString();
     }
@@ -183,6 +205,16 @@ public class Nukkit {
                 }
             }
             this.replacedWith = bytes.toArray();
+        }
+
+        // ChunkTick - Chunks to grow per tick
+        if (config.isInt("chunksPerTick")) {
+            this.chunksPerTick = config.getInt("chunksPerTick", this.chunksPerTick);
+        }
+
+        // ChunkTick - clear tick list
+        if (config.isBoolean("clearTickList")) {
+            this.clearTickList = config.getBoolean("clearTickList", this.clearTickList);
         }
     }
 

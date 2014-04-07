@@ -874,7 +874,7 @@ public class Chunk {
     }
 
     public boolean k() {
-        return this.m && this.done && this.lit;
+        return true || this.m && this.done && this.lit; // Nukkit: force true
     }
 
     public ChunkCoordIntPair l() {
