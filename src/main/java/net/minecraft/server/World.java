@@ -1355,6 +1355,11 @@ public abstract class World implements IBlockAccess {
         }
 
         this.methodProfiler.c("blockEntities");
+        // Nukkit start: brought up from below
+        if (!this.b.isEmpty()) {
+            this.tileEntityList.removeAll(this.b);
+            this.b.clear();
+        } // Nukkit end
         this.M = true;
         Iterator iterator = this.tileEntityList.iterator();
 
@@ -1391,10 +1396,6 @@ public abstract class World implements IBlockAccess {
         }
 
         this.M = false;
-        if (!this.b.isEmpty()) {
-            this.tileEntityList.removeAll(this.b);
-            this.b.clear();
-        }
 
         this.methodProfiler.c("pendingBlockEntities");
         if (!this.a.isEmpty()) {
