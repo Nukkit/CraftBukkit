@@ -536,6 +536,7 @@ public class TileEntityHopper extends TileEntity implements IHopper {
         int i = MathHelper.floor(d0);
         int j = MathHelper.floor(d1);
         int k = MathHelper.floor(d2);
+        if (!world.isLoaded(i, j, k)) return null; // Nukkit
         TileEntity tileentity = world.getTileEntity(i, j, k);
 
         if (tileentity != null && tileentity instanceof IInventory) {
