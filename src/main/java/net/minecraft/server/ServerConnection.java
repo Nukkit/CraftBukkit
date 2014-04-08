@@ -53,6 +53,11 @@ public class ServerConnection {
         List list = this.f;
 
         synchronized (this.f) {
+            // Nukkit start
+            if (fr.ribesg.nukkit.Nukkit.instance.playerShuffling > 0 && MinecraftServer.currentTick % fr.ribesg.nukkit.Nukkit.instance.playerShuffling == 0) {
+                Collections.shuffle(this.f);
+            }
+            // Nukkit end
             Iterator iterator = this.f.iterator();
 
             while (iterator.hasNext()) {

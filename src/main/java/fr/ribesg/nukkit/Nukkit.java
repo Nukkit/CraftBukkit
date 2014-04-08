@@ -44,6 +44,11 @@ public class Nukkit {
      */
     public boolean clearTickList;
 
+    /**
+     * Player shuffling
+     */
+    public int playerShuffling;
+
     /* * * * * * * * * *
      * Static methods  *
      * * * * * * * * * */
@@ -106,6 +111,8 @@ public class Nukkit {
 
         this.clearTickList = false;
 
+        this.playerShuffling = 0;
+
         // Write file
         try {
             if (!nukkitConfigFile.createNewFile()) {
@@ -158,6 +165,10 @@ public class Nukkit {
         // ChunkTick - clear tick list
         builder.append("# Clear tick list ?:\n");
         builder.append("clearTickList: ").append(this.clearTickList).append("\n\n");
+
+        // Player shuffling
+        builder.append("# Player shuffling - prevents players from 'gaming' the server, and strategically relogging to increase their position in the tick order:\n");
+        builder.append("playerShuffling: ").append(this.playerShuffling).append("\n\n");
 
         return builder.toString();
     }
@@ -218,6 +229,11 @@ public class Nukkit {
         // ChunkTick - clear tick list
         if (config.isBoolean("clearTickList")) {
             this.clearTickList = config.getBoolean("clearTickList", this.clearTickList);
+        }
+
+        // Player shuffling
+        if (config.isInt("playerShuffling")) {
+            this.playerShuffling = config.getInt("playerShuffling", this.playerShuffling);
         }
     }
 
