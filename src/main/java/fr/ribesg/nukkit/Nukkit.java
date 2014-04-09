@@ -1,5 +1,6 @@
 package fr.ribesg.nukkit;
 
+import fr.ribesg.nukkit.command.HeapDumpCommand;
 import fr.ribesg.nukkit.command.TicksPerSecondCommand;
 import net.minecraft.server.Block;
 import net.minecraft.util.gnu.trove.set.TByteSet;
@@ -62,6 +63,7 @@ public class Nukkit {
         instance = new Nukkit(server);
 
         server.getCommandMap().register("tps", "Nukkit", new TicksPerSecondCommand());
+        server.getCommandMap().register("heapdump", "Nukkit", new HeapDumpCommand());
 
         Orebfuscator.init(instance.replacedBlocks, instance.replacedWith);
     }
